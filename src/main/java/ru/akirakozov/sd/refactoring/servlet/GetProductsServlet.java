@@ -1,10 +1,8 @@
 package ru.akirakozov.sd.refactoring.servlet;
 
 import ru.akirakozov.sd.refactoring.dao.ProductDAO;
-import ru.akirakozov.sd.refactoring.models.Product;
+import ru.akirakozov.sd.refactoring.html.ProductPrinter;
 
-import java.util.List;
-import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,12 +17,7 @@ public class GetProductsServlet extends ProductServlet {
 
     @Override
     protected void doRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        PrintWriter printerWriter = response.getWriter();
-        List<Product> products = productDAO.getAll();
-        printerWriter.println("<html><body>");
-        for (Product product : products) {
-            printerWriter.println(product.toHTML());
-        }
-        printerWriter.println("</body></html>");
+        ProductPrinter productPrinter = new ProductPrinter(response.getWriter());
+        productPrinter.printProductsList(productDAO.getAll());
     }
 }
